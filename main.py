@@ -1,10 +1,10 @@
 import datetime
 from random import sample as rand_sample
-from string import ascii_lowercase
+from string import ascii_letters
 from requests import post as req_post
 from time import sleep
+from colorama import Fore, init
 import colorama
-from colorama import Fore, Style
 import ctypes
 
 ctypes.windll.kernel32.SetConsoleTitleW("Discord User Raper| Vlaq")
@@ -12,25 +12,21 @@ ctypes.windll.kernel32.SetConsoleTitleW("Discord User Raper| Vlaq")
 BASE_URL = "https://discord.com/api/v9/users/@me/pomelo-attempt"
 
 REQUEST_HEADERS = {
-    "Content-Type": "application/json",
-    "Origin": "https://discord.com/",
-    "Authorization": "MzA4MzA1MDk5NzQxMjAwMzg0.Gzyaln.W2Ck8HY072eLVb1q-bnj8nNk1PYJ6fh6c__m28"
+    "Content-Type": "Application/json",
+    "Orgin": "https://discord.com/",
+    "Authorization":"Token goes here"
 }
 
-request_number = 0
 checked_usernames = set()
 
 def generate_random_username(length: int) -> str:
-    return ''.join(rand_sample(ascii_lowercase, length))
+    return ''.join(rand_sample(ascii_letters, length))
 
 def check_username(user: str):
-    global request_number
-    request_number += 1
-
-    if not (1 <= len(user) <= 32):
+    if 2 > len(user) < 33:
         print(f"{Fore.YELLOW}[{Fore.WHITE}{get_timestamp()}{Fore.YELLOW}] [Error] Username must be 2-32 Characters{Fore.RESET}")
         return
-
+        
     if user in checked_usernames:
         print(f"{Fore.CYAN}[{Fore.WHITE}{get_timestamp()}{Fore.CYAN}] {user} already checked{Fore.RESET}")
         return
@@ -39,37 +35,27 @@ def check_username(user: str):
         "username": user
     }
     check = req_post(BASE_URL, headers=REQUEST_HEADERS, json=data)
-
+    
     try:
-        if check.json().get("taken") is not True:
-            sleep(1)  # Double check usernames so we don't print the wrong status.
-            recheck = req_post(BASE_URL, headers=REQUEST_HEADERS, json=data)
-
-            if recheck.json().get("taken") is not True:
-                print(f"{Fore.GREEN}[{Fore.WHITE}{get_timestamp()}{Fore.GREEN}] {user} is available{Fore.RESET}")
-                save_valid_username(user)
-            else:
-                print(f"{Fore.YELLOW}[{Fore.WHITE}{get_timestamp()}{Fore.YELLOW}] {user} is not available (Double-checked){Fore.RESET}")
+        if check.json()["taken"] is not True:
+            print(f"{Fore.GREEN}[{Fore.WHITE}{get_timestamp()}{Fore.GREEN}] {user} is available{Fore.RESET}")
+            save_valid_username(user)
         else:
             print(f"{Fore.RED}[{Fore.WHITE}{get_timestamp()}{Fore.RED}] {user} is not available{Fore.RESET}")
     except KeyError:
         if check.status_code == 403 or check.status_code == 401:
-            print(f"{Fore.YELLOW}[{Fore.WHITE}{get_timestamp()}{Fore.YELLOW}] [Error]{Fore.RESET}")
+            print(f"{Fore.YELLOW}[{Fore.WHITE}{get_timestamp()}{Fore.YELLOW}] [Error] Request denied. Check your Discord token or limit your requests{Fore.RESET}")
             return False
 
     checked_usernames.add(user)
 
 def get_timestamp() -> str:
-    return datetime.datetime.now().strftime("%H:%M:%S")
+    current_time = datetime.datetime.now().strftime("%I:%M:%S %p")
+    return current_time
 
 def main_menu() -> int:
-    flag = False
-    while not flag:
-        try:
-            user_length = int(input("Amount of characters >"))
-            flag = True
-        except ValueError:
-            print(f"{Fore.YELLOW}[{Fore.WHITE}{get_timestamp()}{Fore.YELLOW}] [Error] Enter a correct value.{Fore.RESET}")
+    init()
+    user_length = int(input(f"{Fore.BLUE}Amount of characters >{Fore.RESET} "))
     return user_length
 
 def save_valid_username(username: str):
@@ -77,7 +63,6 @@ def save_valid_username(username: str):
         file.write(username + "\n")
 
 if __name__ == "__main__":
-    colorama.init()
     username_letters = main_menu()
 
     while True:
@@ -85,4 +70,4 @@ if __name__ == "__main__":
         check_username(user)
         with open("dnt.txt", "a") as file:
             file.write(user + "\n")
-        sleep(1)
+        sleep(0.8)
