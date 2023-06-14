@@ -7,8 +7,7 @@ import colorama
 from colorama import Fore, Style
 import ctypes
 
-# Set console title
-ctypes.windll.kernel32.SetConsoleTitleW("Made by Vlaq")
+ctypes.windll.kernel32.SetConsoleTitleW("Discord User Raper| Vlaq")
 
 BASE_URL = "https://discord.com/api/v9/users/@me/pomelo-attempt"
 
@@ -43,8 +42,7 @@ def check_username(user: str):
 
     try:
         if check.json().get("taken") is not True:
-            # Double-check if the username is really available
-            sleep(1)  # Wait for 1 second before rechecking
+            sleep(1)  # Double check usernames so we don't print the wrong status.
             recheck = req_post(BASE_URL, headers=REQUEST_HEADERS, json=data)
 
             if recheck.json().get("taken") is not True:
