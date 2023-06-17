@@ -70,4 +70,4 @@ if __name__ == "__main__":
         check_username(user)
         with open("dnt.txt", "a") as file:
             file.write(user + "\n")
-        sleep(0.8)
+        sleep(2)
