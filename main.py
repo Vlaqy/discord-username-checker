@@ -1,28 +1,29 @@
 import datetime
 from random import sample as rand_sample
-from string import ascii_letters
+from string import ascii_letters, digits
 from requests import post as req_post
 from time import sleep
 from colorama import Fore, init
 import colorama
 import ctypes
 
-ctypes.windll.kernel32.SetConsoleTitleW("Discord User Raper| Vlaq")
+ctypes.windll.kernel32.SetConsoleTitleW("Discordo :3")
 
 BASE_URL = "https://discord.com/api/v9/users/@me/pomelo-attempt"
 
 REQUEST_HEADERS = {
     "Content-Type": "Application/json",
     "Orgin": "https://discord.com/",
-    "Authorization": "MzA4MzA1MDk5NzQxMjAwMzg0.GkXUgt.lojhW0KFgCU4xMhfmV1AadmsSA-ocDRYnCMBnw"
+    "Authorization": "Token-Here"
 }
 
 checked_usernames = set()
 
 def generate_random_username(length: int) -> str:
-    return ''.join(rand_sample(ascii_letters, length))
+    characters = ascii_letters + digits
+    return ''.join(rand_sample(characters, length))
 
-def check_username(user: str):
+def check_username(user):
     if 2 > len(user) < 33:
         print(f"{Fore.YELLOW}[{Fore.WHITE}{get_timestamp()}{Fore.YELLOW}] [Error] Username must be 2-32 Characters{Fore.RESET}")
         return
@@ -63,10 +64,10 @@ def save_valid_username(username: str):
         file.write(username + "\n")
 
 if __name__ == "__main__":
-    username_letters = main_menu()
+    username_length = main_menu()
 
     while True:
-        user = generate_random_username(username_letters)
+        user = generate_random_username(username_length)
         check_username(user)
         with open("dnt.txt", "a") as file:
             file.write(user + "\n")
