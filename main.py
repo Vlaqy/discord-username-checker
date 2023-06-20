@@ -1,6 +1,6 @@
 import datetime
 from random import sample as rand_sample
-from string import ascii_letters, digits
+from string import ascii_lowercase, digits
 from requests import post as req_post
 from time import sleep
 from colorama import Fore, init
@@ -14,13 +14,13 @@ BASE_URL = "https://discord.com/api/v9/users/@me/pomelo-attempt"
 REQUEST_HEADERS = {
     "Content-Type": "Application/json",
     "Orgin": "https://discord.com/",
-    "Authorization": "Token-Here"
+    "Authorization": "MzA4MzA1MDk5NzQxMjAwMzg0.GP1pnQ.QvBNpIhmLbDvnB1mOLaV9VxAx7Q3l9U8-rqUJI"
 }
 
 checked_usernames = set()
 
 def generate_random_username(length: int) -> str:
-    characters = ascii_letters + digits
+    characters = ascii_lowercase + digits
     return ''.join(rand_sample(characters, length))
 
 def check_username(user):
@@ -65,10 +65,10 @@ def save_valid_username(username: str):
 
 if __name__ == "__main__":
     username_length = main_menu()
-
+    interval = 60 / 24 
     while True:
         user = generate_random_username(username_length)
         check_username(user)
         with open("dnt.txt", "a") as file:
             file.write(user + "\n")
-        sleep(1.3)
+        sleep(interval)
