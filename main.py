@@ -14,7 +14,7 @@ BASE_URL = "https://discord.com/api/v9/users/@me/pomelo-attempt"
 REQUEST_HEADERS = {
     "Content-Type": "Application/json",
     "Orgin": "https://discord.com/",
-    "Authorization": "MzA4MzA1MDk5NzQxMjAwMzg0.GP1pnQ.QvBNpIhmLbDvnB1mOLaV9VxAx7Q3l9U8-rqUJI"
+    "Authorization": "Token-Here"
 }
 
 checked_usernames = set()
