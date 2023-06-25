@@ -24,7 +24,7 @@ def generate_random_username(length: int) -> str:
     return ''.join(rand_sample(characters, length))
 
 def check_username(user):
-    if 2 > len(user) < 33:
+    if 2 > len(user) < 32:
         print(f"{Fore.YELLOW}[{Fore.WHITE}{get_timestamp()}{Fore.YELLOW}] [Error] Username must be 2-32 Characters{Fore.RESET}")
         return
         
